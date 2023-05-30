@@ -707,6 +707,11 @@
 
 ###### [62）、Spark Core和Spark SQL区别?哪个快？为什么？]()
     Spark SQL构建在Spark Core之上，专门用来处理结构化数据(不仅仅是SQL)。即Spark SQL是Spark Core封装而来的。
+    Spark Core是Spark的核心组件，提供了分布式任务调度、内存计算和数据存储等基础功能；而Spark SQL是基于SQL语言的数据处理组件，可以方便地处理结构化数据。Spark Core主要用于处理非结构化数据，而Spark SQL主要用于处理结构化数据。
+
+对于简单的操作，如count和sum，SparkSQL和Spark任务速度上的差异几乎可以忽略。 SparkSQL会将count、sum最终转换为底层RDD操作，从SQL解析到优化编译的耗时几乎可以忽略掉了。 对于非常复杂的操作，SparkSQL的catalyst会对SQL做优化，如果自己用Spark Core的api去实现这些操作未必有SQL快。 Spark2.0以上的版本对SQL这块做了大量的改进优化，基于SQL对数据做处理也是非常简单，SQL是官方推荐使用的high-level API2。
+
+如果是列存储的格式化数据 (parquet,orc之类的)，肯定是用sparksql快，如果是非格式化数据，就要先转换成dataframe才能用sparksql，这种情况下应该是直接用rdd更快。
 
 ###### [63）、Spark和MapReduce区别?]()
 
